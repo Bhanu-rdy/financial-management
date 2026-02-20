@@ -55,7 +55,7 @@ function Signup() {
                     }
 
                     //step 4: Check userName availability (API - call)
-                    const userNameCheckResponse = await fetch("https://financial-management-e8o9.onrender.comhttp://localhost:8080/api/auth/check-username", {
+                    const userNameCheckResponse = await fetch("https://financial-management-e8o9.onrender.com/api/auth/check-username", {
                         method: "POST",
                         headers: {
                             "Content-Type" : "application/json"
