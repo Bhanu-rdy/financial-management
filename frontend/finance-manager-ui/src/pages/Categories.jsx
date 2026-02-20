@@ -24,7 +24,7 @@ function Categories() {
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/categories', {
+            const response = await fetch('https://financial-management-e8o9.onrender.com/api/categories', {
                 method: 'GET',
                 credentials: 'include'
             });

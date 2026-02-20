@@ -36,7 +36,7 @@ function AddCategory() {
             }
 
             // Send request with JWT token
-            const response = await fetch('http://localhost:8080/api/categories', {
+            const response = await fetch('https://financial-management-e8o9.onrender.com/api/categories', {
                 method: 'POST',
                 credentials: 'include', // to send cookies
                 headers: {

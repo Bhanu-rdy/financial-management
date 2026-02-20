@@ -14,7 +14,7 @@ function SavingsGoals() {
 
     const fetchSavingsGoals = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/savings', {
+            const response = await fetch('https://financial-management-e8o9.onrender.com/api/savings', {
                 method: 'GET',
                 credentials: 'include'
             });

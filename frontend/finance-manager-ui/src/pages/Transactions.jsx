@@ -25,7 +25,7 @@ function Transactions() {
 
     const fetchTransactions = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/transactions', {
+            const response = await fetch('https://financial-management-e8o9.onrender.com/api/transactions', {
                 method: 'GET',
                 credentials: 'include'
             });

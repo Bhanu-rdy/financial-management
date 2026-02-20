@@ -47,7 +47,7 @@ function OTPVerification() {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:8080/api/otp/send', {
+            const response = await fetch('https://financial-management-e8o9.onrender.com/api/otp/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ function OTPVerification() {
 
         try {
             // Step 1: Verify OTP
-            const otpResponse = await fetch('http://localhost:8080/api/otp/verify', {
+            const otpResponse = await fetch('https://financial-management-e8o9.onrender.com/api/otp/verify', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -100,7 +100,7 @@ function OTPVerification() {
                     return;
                 }
 
-                const registerResponse = await fetch('http://localhost:8080/api/auth/register', {
+                const registerResponse = await fetch('https://financial-management-e8o9.onrender.com/api/auth/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

@@ -30,7 +30,7 @@ function SetBudget() {
 
     const fetchExpenseCategories = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/categories/type/EXPENSE', {
+            const response = await fetch('https://financial-management-e8o9.onrender.com/api/categories/type/EXPENSE', {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -83,7 +83,7 @@ function SetBudget() {
             };
 
             // Send request
-            const response = await fetch('http://localhost:8080/api/budgets', {
+            const response = await fetch('https://financial-management-e8o9.onrender.com/api/budgets', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
