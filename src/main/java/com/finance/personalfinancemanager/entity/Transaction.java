@@ -1,6 +1,6 @@
 package com.finance.personalfinancemanager.entity;
 
-import com.finance.personalfinancemanager.Category;
+import com.finance.personalfinancemanager.enums.CategoryType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +34,7 @@ public class Transaction {
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private String type; // INCOME OR EXPENSE
+    private CategoryType type; // INCOME OR EXPENSE
 
     @Column(length = 500)
     private String description;
@@ -42,6 +42,6 @@ public class Transaction {
     @Column(nullable = false)
     private LocalDate transactionDate;
 
-    @Column(updatable = false)
+    @Column(updatable = false, columnDefinition = "datetime")
     private LocalDateTime createdAt = LocalDateTime.now();
 }

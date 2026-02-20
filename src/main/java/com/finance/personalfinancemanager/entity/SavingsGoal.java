@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "saving_goals")
@@ -32,5 +33,13 @@ public class SavingsGoal {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal currentAmount = BigDecimal.ZERO;
 
-    private LocalDate deadLine;
+    @Column(nullable = false)
+    private LocalDate deadline;
+
+
+    @Column(nullable = false)
+    private Boolean completed = false;
+
+    @Column(nullable = false, updatable = false, columnDefinition = "datetime")
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

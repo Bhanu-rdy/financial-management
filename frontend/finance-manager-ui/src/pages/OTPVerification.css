@@ -1,0 +1,217 @@
+.otp-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
+
+.otp-box {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+}
+
+.otp-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.otp-header h1 {
+    color: #667eea;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Messages */
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #c3e6cb;
+    text-align: center;
+    font-weight: 500;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Email Display */
+.email-display {
+    margin-bottom: 30px;
+}
+
+.email-display label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.email-input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #f5f5f5;
+    color: #666;
+    cursor: not-allowed;
+    box-sizing: border-box;
+}
+
+/* OTP Section */
+.otp-section {
+    margin-bottom: 20px;
+}
+
+.info-text {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* OTP Input Group */
+.otp-input-group {
+    margin-bottom: 25px;
+}
+
+.otp-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.otp-input {
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 24px;
+    text-align: center;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: #667eea;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.otp-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.help-text {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+}
+
+/* Buttons */
+.otp-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 12px;
+}
+
+.primary-btn {
+    background: #667eea;
+    color: white;
+}
+
+.primary-btn:hover:not(:disabled) {
+    background: #5568d3;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.primary-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.secondary-btn {
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background: #f0f2ff;
+}
+
+.secondary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Back Link */
+.back-link {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.back-link a {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.back-link a:hover {
+    color: #5568d3;
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .otp-box {
+        padding: 30px 20px;
+    }
+
+    .otp-header h1 {
+        font-size: 24px;
+    }
+
+    .otp-input {
+        font-size: 20px;
+        letter-spacing: 1px;
+    }
+}

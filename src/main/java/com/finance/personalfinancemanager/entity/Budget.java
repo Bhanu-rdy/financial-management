@@ -1,12 +1,12 @@
 package com.finance.personalfinancemanager.entity;
 
-import com.finance.personalfinancemanager.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "budget")
@@ -38,5 +38,12 @@ public class Budget {
     private Integer year;
 
     @Column(nullable = false)
-    private Integer alertThreshold = 80; // 80 or 100
+    private Integer alertThreshold;
+
+    @Column(nullable = false)
+    private Boolean alertTriggered = false;
+
+
+    @Column(nullable = false, updatable = false, columnDefinition = "datetime")
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

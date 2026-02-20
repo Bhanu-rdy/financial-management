@@ -5,34 +5,34 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "email_otps")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class EmailOTP {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String userName;
-
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String otp;
 
-    private String firstName;
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime createdAt;
 
-    private String lastName;
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime expiresAt;
 
-    @Column(updatable = false, columnDefinition = "datetime")
-    private final LocalDateTime createdAt = LocalDateTime.now();
-
+    @Column(nullable = false)
+    private Boolean verified = false;
 
 }
+

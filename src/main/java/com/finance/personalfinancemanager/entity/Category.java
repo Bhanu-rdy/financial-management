@@ -1,10 +1,12 @@
-package com.finance.personalfinancemanager;
+package com.finance.personalfinancemanager.entity;
 
-import com.finance.personalfinancemanager.entity.User;
+import com.finance.personalfinancemanager.enums.CategoryType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "categories")
@@ -24,7 +26,11 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String type;   //INCOME OR EXPENSE
+    private CategoryType type;  //INCOME OR EXPENSE
+
+    @Column(nullable = false, updatable = false, columnDefinition = "datetime")
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 }
