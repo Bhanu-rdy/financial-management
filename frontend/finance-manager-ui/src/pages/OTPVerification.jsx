@@ -54,10 +54,10 @@ function OTPVerification() {
                 },
                 body: JSON.stringify({ email: email })
             });
-            console.log(response);
+
 
             const data = await response.json();
-           console.log(data);
+
             if (response.ok && data.success) {
                 setOtpSent(true);
                 setMessage('✅ OTP sent successfully! Check your email inbox.');
