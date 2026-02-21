@@ -32,9 +32,10 @@ public class SecurityConfig {
                 //Public endpoints (no authenticaton required)
                         .requestMatchers("/api/otp/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/categories/**").authenticated()
+                                //Protected endpoints (require JWT token)
+                                 .requestMatchers("/api/categories/**").authenticated()
 
-                        //Protected endpoints (require JWT token)
+
                 .anyRequest().authenticated()
                 ).sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
