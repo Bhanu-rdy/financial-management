@@ -38,7 +38,7 @@ public class EmailService {
             mailSender.send(message);
         }
         catch (Exception e) {
-            throw new RuntimeException(toEmail);
+            System.out.println(e.getMessage());
         }
     }
 
