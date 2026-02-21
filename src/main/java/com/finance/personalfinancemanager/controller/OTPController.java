@@ -25,7 +25,7 @@ public class OTPController {
         }
         catch (Exception e) {
             System.out.println("error sending email");
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new OTPResponse("Failed to send OTP to: " + e.getMessage(), false));
         }
     }
