@@ -26,18 +26,22 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
 
-
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                //Public endpoints (no authenticaton required)
+                        // Public endpoints (no authentication required)
                         .requestMatchers("/api/otp/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                                //Protected endpoints (require JWT token)
-                                 .requestMatchers("/api/categories/**").authenticated()
 
+                        // Protected endpoints (require JWT token)
+                        .requestMatchers("/api/categories/**").authenticated()
+                        .requestMatchers("/api/transactions/**").authenticated()
+                        .requestMatchers("/api/budgets/**").authenticated()
+                        .requestMatchers("/api/savings/**").authenticated()
+                        .requestMatchers("/api/dashboard/**").authenticated()
 
-                .anyRequest().authenticated()
-                ).sessionManagement(session -> session
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -48,11 +52,18 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("https://financemanager2.netlify.app")); // allows request from any frontend port
+
+        // ✅ Allow both localhost and Netlify
+        configuration.setAllowedOriginPatterns(Arrays.asList(
+                "http://localhost:3000",
+                "https://financemanager2.netlify.app"
+        ));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true);  // ✅ Critical for cookies
         configuration.setExposedHeaders(Arrays.asList("Set-Cookie"));
+        configuration.setMaxAge(3600L);  // ✅ Cache preflight requests for 1 hour
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

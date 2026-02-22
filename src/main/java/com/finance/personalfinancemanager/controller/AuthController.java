@@ -51,13 +51,13 @@ public class AuthController {
             //Create httpOnly cookie with JWT token
             Cookie cookie = new Cookie("token", loginResponse.getToken());
             cookie.setHttpOnly(true); //cannot be accessed by javascript
-            cookie.setSecure(false);
+            cookie.setSecure(true);
             cookie.setPath("/");
             cookie.setMaxAge(24 * 60 * 60); //24 hours
             response.addCookie(cookie);
 
             response.addHeader("Set-Cookie",
-                    String.format("token=%s; Path=/; Max-Age=86400; SameSite=Lax",
+                    String.format("token=%s; Path=/; Max-Age=86400; HttpOnly; Secure; SameSite=None",
                             loginResponse.getToken()));
 
             return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
@@ -75,11 +75,14 @@ public class AuthController {
         //clear cookie
         Cookie cookie = new Cookie("token", null);
         cookie.setHttpOnly(true);
-        cookie.setSecure(false);
+        cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(0);
 
         response.addCookie(cookie);
+
+        response.setHeader("Set-Cookie",
+                "token=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=None");
 
         return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("Logged out successfully"));
     }
