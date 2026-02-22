@@ -1,45 +1,66 @@
 package com.finance.personalfinancemanager.service;
 
-
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import com.sendgrid.*;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    @Value("${SENDGRID_API_KEY}")
+    private String sendGridApiKey;
 
-    //generates 6 digit otp
-    public  String generateOTP() {
+    // Generates 6 digit OTP
+    public String generateOTP() {
         SecureRandom random = new SecureRandom();
         int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);
     }
 
-    public void sendOTPEmail(String toEmail,String otp) {
+    public void sendOTPEmail(String toEmail, String otp) {
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            System.out.println("=== SENDING EMAIL VIA SENDGRID REST API ===");
+            System.out.println("To: " + toEmail);
+            System.out.println("OTP: " + otp);
+            System.out.println("API Key starts with: " + (sendGridApiKey != null ? sendGridApiKey.substring(0, 5) : "NULL"));
 
-            helper.setFrom("Finance Manager <bhanuprakashreddyvangala@gmail.com>");
-            helper.setTo(toEmail);
-            helper.setSubject("Finance Manager: Email Verification");
-            helper.setText("Your OTP code is: " + otp + "\n\nThis code will expire in 5 minutes.\n\nIf you didn't request this, please ignore this email.");
+            // Create email using SendGrid REST API
+            Email from = new Email("bhanuprakashreddyvangala@gmail.com", "Finance Manager");
+            Email to = new Email(toEmail);
+            String subject = "Finance Manager: Email Verification";
 
-            mailSender.send(message);
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
+            String textContent = "Your OTP code is: " + otp + "\n\n" +
+                    "This code will expire in 5 minutes.\n\n" +
+                    "If you didn't request this, please ignore this email.";
+
+            Content content = new Content("text/plain", textContent);
+            Mail mail = new Mail(from, subject, to, content);
+
+            // Send via SendGrid REST API
+            SendGrid sg = new SendGrid(sendGridApiKey);
+            Request request = new Request();
+
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+
+            Response response = sg.api(request);
+
+            System.out.println("SendGrid Response Status: " + response.getStatusCode());
+            System.out.println("SendGrid Response Body: " + response.getBody());
+            System.out.println("Email sent successfully!");
+            System.out.println("==========================================");
+
+        } catch (IOException e) {
+            System.err.println("Email error: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to send email: " + e.getMessage());
         }
     }
-
 }
