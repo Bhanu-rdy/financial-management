@@ -1,21 +1,31 @@
+
 package com.finance.personalfinancemanager.service;
 
-import com.sendgrid.*;
-
-import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Content;
-import com.sendgrid.helpers.mail.objects.Email;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
-import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.Map;
 
 @Service
 public class EmailService {
 
-    @Value("${SENDGRID_API_KEY}")
-    private String sendGridApiKey;
+    @Value("${RESEND_API_KEY}")
+    private String resendApiKey;
+
+    @Value("${RESEND_FROM_EMAIL}")
+    private String fromEmail;
+
+    private final RestClient restClient;
+
+    public EmailService(RestClient.Builder builder) {
+        this.restClient = builder
+                .baseUrl("https://api.resend.com")
+                .build();
+    }
 
     // Generates 6 digit OTP
     public String generateOTP() {
@@ -25,43 +35,89 @@ public class EmailService {
     }
 
     public void sendOTPEmail(String toEmail, String otp) {
+
         try {
-            System.out.println("=== SENDING EMAIL VIA SENDGRID REST API ===");
-            System.out.println("To: " + toEmail);
-            System.out.println("OTP: " + otp);
-            System.out.println("API Key starts with: " + (sendGridApiKey != null ? sendGridApiKey.substring(0, 5) : "NULL"));
 
-            // Create email using SendGrid REST API
-            Email from = new Email("bhanuprakashreddyvangala@gmail.com", "Finance Manager");
-            Email to = new Email(toEmail);
-            String subject = "Finance Manager: Email Verification";
+            String htmlContent = """
+                    <!DOCTYPE html>
+                    <html>
+                    <body style="font-family: Arial, sans-serif;
+                                 background-color: #f4f6f8;
+                                 padding: 30px;">
 
-            String textContent = "Your OTP code is: " + otp + "\n\n" +
-                    "This code will expire in 5 minutes.\n\n" +
-                    "If you didn't request this, please ignore this email.";
+                        <div style="max-width: 500px;
+                                    margin: auto;
+                                    background: white;
+                                    padding: 30px;
+                                    border-radius: 8px;">
 
-            Content content = new Content("text/plain", textContent);
-            Mail mail = new Mail(from, subject, to, content);
+                            <h2 style="color: #17365D;
+                                       text-align: center;">
+                                Personal Finance Manager
+                            </h2>
 
-            // Send via SendGrid REST API
-            SendGrid sg = new SendGrid(sendGridApiKey);
-            Request request = new Request();
+                            <h3>Hello!</h3>
 
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
+                            <p>
+                                You requested an OTP to verify
+                                your email address.
+                            </p>
 
-            Response response = sg.api(request);
+                            <h1 style="text-align: center;
+                                       letter-spacing: 8px;
+                                       color: #17365D;">
+                                %s
+                            </h1>
 
-            System.out.println("SendGrid Response Status: " + response.getStatusCode());
-            System.out.println("SendGrid Response Body: " + response.getBody());
-            System.out.println("Email sent successfully!");
-            System.out.println("==========================================");
+                            <p>This OTP is valid for 5 minutes.</p>
 
-        } catch (IOException e) {
-            System.err.println("Email error: " + e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException("Failed to send email: " + e.getMessage());
+                            <p>
+                                Please do not share this OTP
+                                with anyone.
+                            </p>
+
+                            <p>
+                                If you didn't request this OTP,
+                                please ignore this email.
+                            </p>
+
+                            <p>
+                                Thank you,<br>
+                                <strong>
+                                    Personal Finance Manager Team
+                                </strong>
+                            </p>
+
+                        </div>
+                    </body>
+                    </html>
+                    """.formatted(otp);
+
+            Map<String, Object> requestBody = Map.of(
+                    "from", "Finance Manager <" + fromEmail + ">",
+                    "to", new String[]{toEmail},
+                    "subject", "Finance Manager - Email Verification OTP",
+                    "html", htmlContent
+            );
+
+            String response = restClient.post()
+                    .uri("/emails")
+                    .header(HttpHeaders.AUTHORIZATION,
+                            "Bearer " + resendApiKey)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(requestBody)
+                    .retrieve()
+                    .body(String.class);
+
+            System.out.println("Email sent successfully via Resend!");
+            System.out.println("Resend response: " + response);
+
+        } catch (Exception e) {
+
+            System.err.println("Resend email error: " + e.getMessage());
+
+            throw new RuntimeException(
+                    "Failed to send OTP email", e);
         }
     }
 }
