@@ -21,11 +21,11 @@ public class EmailService {
 
     private final RestClient restClient;
 
-    public EmailService(RestClient.Builder builder) {
-        this.restClient = builder
-                .baseUrl("https://api.resend.com")
-                .build();
-    }
+    public EmailService() {
+    this.restClient = RestClient.builder()
+            .baseUrl("https://api.resend.com")
+            .build();
+}
 
     // Generates 6 digit OTP
     public String generateOTP() {
