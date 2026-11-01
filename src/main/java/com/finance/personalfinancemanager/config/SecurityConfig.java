@@ -56,7 +56,7 @@ public class SecurityConfig {
         // ✅ Allow both localhost and Netlify
         configuration.setAllowedOriginPatterns(Arrays.asList(
                 "http://localhost:3000",
-                "https://financemanager2.netlify.app"
+                "https://myfinancetrack-app.netlify.app"
         ));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
