@@ -43,7 +43,7 @@ function Dashboard() {
 
     const fetchDashboardStats = async () => {
         try {
-            const response = await fetch('https://financial-management-e8o9.onrender.com/api/dashboard/stats', {
+            const response = await fetch('https://financial-management-1-btlq.onrender.com/api/dashboard/stats', {
                 method: 'GET',
                 credentials: 'include'
             });

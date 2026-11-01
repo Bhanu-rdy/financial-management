@@ -14,7 +14,7 @@ function Budgets() {
 
     const fetchBudgets = async () => {
         try {
-            const response = await fetch('https://financial-management-e8o9.onrender.com/api/budgets', {
+            const response = await fetch('https://financial-management-1-btlq.onrender.com/api/budgets', {
                 method: 'GET',
                 credentials: 'include'
             });
